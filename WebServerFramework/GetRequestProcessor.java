@@ -29,11 +29,10 @@ public class GetRequestProcessor extends RequestProcessor {
         assert(this.canProcess(request.getMethodType()));
         Response response = new Response(request.getHTTPVersion());
         String fileName;
-        fileName = request.getURI();
+        fileName = request.getURI().substring(1);
         File requestedFile = new File(fileName);
         FileInputStream fileInput;
-        
-        if (!requestedFile.exists()){
+        if (requestedFile.exists() == false){
             response.setStatus(HTTPStatus.NOT_FOUND);
             response.setHeaderField("Content-Type:", "text/html");
             requestedFile = new File("notfound.txt");

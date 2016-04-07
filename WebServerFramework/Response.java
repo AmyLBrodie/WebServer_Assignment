@@ -80,10 +80,16 @@ public class Response extends Message {
      */
     public static void send(final OutputStream output, final Response response) throws IOException   {
         // Code here.
-        String startLine = response.getStartLine();
         DataOutputStream outputStream = new DataOutputStream(output);
-        outputStream.writeBytes(response.getStartLine());
-        outputStream.writeBytes(response.bodyInput.toString());
+        outputStream.writeBytes(response.getStartLine() + CRLF);
+        outputStream.writeBytes(CRLF);
+        byte [] byteBuffer = new byte [4096];
+        int bufferBytes = response.bodyInput.read(byteBuffer);
+        while (bufferBytes != -1){
+            outputStream.write(byteBuffer, 0, bufferBytes);
+            bufferBytes = response.bodyInput.read(byteBuffer);
+        }
+        outputStream.close();
     }
 
 }

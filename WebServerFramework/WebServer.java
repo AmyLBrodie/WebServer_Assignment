@@ -28,12 +28,20 @@ public class WebServer {
                 System.out.println(port);
                 
                 ServerSocket webServerSocket;
-                try{
-                    webServerSocket = new ServerSocket(port);
-                }
-                catch(IOException e){
-                    System.out.println(e);
-                }
+                webServerSocket = new ServerSocket(port);
+                System.out.println("*");
+                
+                
+                Socket clientSocket = null;
+                clientSocket = webServerSocket.accept();
+                
+                Request request = Request.parse(clientSocket.getInputStream());
+                GetRequestProcessor requestProcessor = new GetRequestProcessor();
+                Response response = requestProcessor.process(request);
+                Response.send(clientSocket.getOutputStream(), response);
+                
+                clientSocket.close();
+                webServerSocket.close();
 	}
 
 }
