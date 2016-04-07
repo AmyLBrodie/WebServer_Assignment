@@ -80,6 +80,10 @@ public class Response extends Message {
      */
     public static void send(final OutputStream output, final Response response) throws IOException   {
         // Code here.
+        String startLine = response.getStartLine();
+        DataOutputStream outputStream = new DataOutputStream(output);
+        outputStream.writeBytes(response.getStartLine());
+        outputStream.writeBytes(response.bodyInput.toString());
     }
 
 }

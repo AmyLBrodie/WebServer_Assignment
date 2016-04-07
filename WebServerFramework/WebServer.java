@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 /**
@@ -24,6 +25,15 @@ public class WebServer {
     public static void main(String argv[]) throws Exception {
 		// Get the port number from the command line.
 		int port = argv.length>0 ?(new Integer(argv[0])).intValue():0;
+                System.out.println(port);
+                
+                ServerSocket webServerSocket;
+                try{
+                    webServerSocket = new ServerSocket(port);
+                }
+                catch(IOException e){
+                    System.out.println(e);
+                }
 	}
 
 }

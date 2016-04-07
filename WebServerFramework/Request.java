@@ -70,7 +70,22 @@ public class Request extends Message {
      */
     public static Request parse(final InputStream input) throws IOException {
         // Code here.
-        return null;
+        InputStreamReader streamReader = new InputStreamReader(input);
+        
+        BufferedReader reader = new BufferedReader(streamReader);
+        String startLine = reader.readLine();
+        String strMethod = startLine.substring(0, startLine.indexOf(" "));
+        HTTPMethodType method = null;
+        if (strMethod.toUpperCase().equals("GET")){
+            method = HTTPMethodType.GET;
+        }
+        else{
+            method = HTTPMethodType.OPTIONS;
+        }
+        String uri = startLine.substring(startLine.indexOf(" ")+1, startLine.lastIndexOf(" "));
+        String http = startLine.substring(startLine.lastIndexOf(" ")+1);
+        Request request = new Request(method, uri, http);
+        return request;
     }
 
 }
