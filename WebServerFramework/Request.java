@@ -76,12 +76,32 @@ public class Request extends Message {
         String startLine = reader.readLine();
         String strMethod = startLine.substring(0, startLine.indexOf(" "));
         HTTPMethodType method = null;
+        
         if (strMethod.toUpperCase().equals("GET")){
             method = HTTPMethodType.GET;
+        }
+        else if (strMethod.toUpperCase().equals("HEAD")){
+            method = HTTPMethodType.HEAD;
+        }
+        else if (strMethod.toUpperCase().equals("POST")){
+            method = HTTPMethodType.POST;
+        }
+        else if (strMethod.toUpperCase().equals("PUT")){
+            method = HTTPMethodType.PUT;
+        }
+        else if (strMethod.toUpperCase().equals("DELETE")){
+            method = HTTPMethodType.DELETE;
+        }
+        else if (strMethod.toUpperCase().equals("TRACE")){
+            method = HTTPMethodType.TRACE;
+        }
+        else if (strMethod.toUpperCase().equals("CONNECT")){
+            method = HTTPMethodType.CONNECT;
         }
         else{
             method = HTTPMethodType.OPTIONS;
         }
+        
         String uri = startLine.substring(startLine.indexOf(" ")+1, startLine.lastIndexOf(" "));
         String http = startLine.substring(startLine.lastIndexOf(" ")+1);
         Request request = new Request(method, uri, http);

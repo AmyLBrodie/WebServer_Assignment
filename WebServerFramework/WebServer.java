@@ -25,12 +25,10 @@ public class WebServer {
     public static void main(String argv[]) throws Exception {
 		// Get the port number from the command line.
 		int port = argv.length>0 ?(new Integer(argv[0])).intValue():0;
-                System.out.println(port);
+                System.out.println("Port number is: " + port);
                 
                 ServerSocket webServerSocket;
                 webServerSocket = new ServerSocket(port);
-                System.out.println("*");
-                
                 
                 Socket clientSocket = null;
                 clientSocket = webServerSocket.accept();

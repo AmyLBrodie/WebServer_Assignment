@@ -2,7 +2,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-//
+import java.util.Calendar;
 import java.nio.charset.StandardCharsets;
 /**
  * A GetRequestProcessor contains the logic necessary for handling HTTP GET requests.
@@ -34,8 +34,11 @@ public class GetRequestProcessor extends RequestProcessor {
         FileInputStream fileInput;
         if (requestedFile.exists() == false){
             response.setStatus(HTTPStatus.NOT_FOUND);
+            Calendar date = Calendar.getInstance();
+            response.setHeaderField("Date:", date.getTime().toString());
+            response.setHeaderField("Connection:", "close");
             response.setHeaderField("Content-Type:", "text/html");
-            requestedFile = new File("notfound.txt");
+            requestedFile = new File("error.html");
             fileInput = new FileInputStream(requestedFile);
             response.setBody(fileInput);
         }
@@ -45,7 +48,12 @@ public class GetRequestProcessor extends RequestProcessor {
             if (fileName.substring(fileName.indexOf('.') +1).equals("txt") || fileName.substring(fileName.indexOf('.') +1).equals("html")){
                 contentType = "text/html";
             }
+            else if (fileName.indexOf('.') == -1){
+                contentType = "json";
+            }
             response.setStatus(HTTPStatus.OK);
+            Calendar date = Calendar.getInstance();
+            response.setHeaderField("Date:", date.getTime().toString());
             response.setHeaderField("Connection:", "close");
             response.setHeaderField("Content-Type:", contentType);
             response.setBody(fileInput);

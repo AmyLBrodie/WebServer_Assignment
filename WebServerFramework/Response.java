@@ -3,6 +3,7 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 //
 import java.util.List;
 /**
@@ -82,8 +83,15 @@ public class Response extends Message {
         // Code here.
         DataOutputStream outputStream = new DataOutputStream(output);
         outputStream.writeBytes(response.getStartLine() + CRLF);
+        List<String> listOfHeaders = response.getHeaderFieldNames();
+        if (!listOfHeaders.isEmpty()){
+            for (int i=0; i<listOfHeaders.size(); i++){
+                outputStream.writeBytes(listOfHeaders.get(i) + " " + response.getHeaderFieldValue(listOfHeaders.get(i)) + CRLF);
+            }
+        }
         outputStream.writeBytes(CRLF);
-        byte [] byteBuffer = new byte [4096];
+        
+        byte [] byteBuffer = new byte [1024];
         int bufferBytes = response.bodyInput.read(byteBuffer);
         while (bufferBytes != -1){
             outputStream.write(byteBuffer, 0, bufferBytes);
